@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+h1, h3 {
+    text-align: center;
+}
+.step {
+    margin-bottom: 40px;
+}
+.step-image1{
+
+    max-width: 800px;
+}
+.step-image{
+   max-width: 750px;
+}
+
+.step-image-close{
+    max-width: 500px;
+ }
+.step{
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}

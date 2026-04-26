@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>
+        Show Stamper
+    </title>
+    <link rel="icon" href="./images/icononly_transparent.png">
+    <link rel="stylesheet" href="style/style.css">
+    <script src="javascript/FileSaver.js"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3720064074465497"
+     crossorigin="anonymous"></script>
+</head>
+
+<body class="body">
+    <div id="content-container" class="content-container">
+        <div id="logo-container" class="logo-container">
+            <img class="img-logo" src="./images/FullLogo_Caption_Transparent.png" />
+        </div>
+        <div id="inner-content-container" class="inner-content-container">
+        <div class="title-container" id="title-container">
+            <div class="label-div">
+                <label class="timestamps-label">Create a new video log:</label>
+                </div>
+            <input class="title-input" type="text" height="50" size="60" id="title"
+                placeholder="What is the title of the video log?" aria-label="Video log title" />
+            <button class="btn-submit" id="title-submit">Submit</button>
+        </div>
+        <div class="or-container" id="or-container">
+            </br>
+            <p style="margin-left: 10px">OR</p>
+            </br>
+        </div>
+        <div class="select-container" id="select-container">
+            <div class="label-div">
+            <label class="timestamps-label">Upload an existing video log:</label>
+            </div>
+            <input class="timestamp-path" id="txt-path" type="text" height="50" size="60" placeholder="c:\" aria-label="Path to existing video log file" />
+            <button class="btn-select" margin-left="50" id="btn-stamp-loader">Select</button>
+        </div>
+    </div>
+    </div>
+    <script src="javascript/HackTimer.js"></script>
+    <script src="javascript/HackTimerWorker.js"></script>
+    <script type="module" src="javascript/TimeStamp.js"></script>
+    <script type="module" src="javascript/java.js"></script>
+</body>
+</html>

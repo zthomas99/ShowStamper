@@ -1,0 +1,38 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #F6FCFE;
+}
+img {
+    max-width: 50%;
+    margin: 0 auto;
+}
+.image-section{
+    display: flex;
+    align-content: center;
+}
+
+.donation-title {
+    text-align: center;
+}
+
+.link-section{
+    display: flex;
+    width: 100%;
+    align-content: center;
+    margin-top: 30px;
+}
+
+.button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    margin:0 auto;
+}
