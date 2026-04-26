@@ -20,7 +20,7 @@ export class Timestamp
             this.timeList.push(time);
         }
         this.topic = topic;
-        this.level = level;
+        this.level = level !== undefined ? level : 1;
         this.id = this.create_UUID();
     }
 

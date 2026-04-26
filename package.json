@@ -2,16 +2,14 @@
   "name": "show-stamper",
   "version": "1.0.0",
   "description": "Web app for creating timestamped video logs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "vitest",
     "start": "firebase serve"
   },
   "devDependencies": {
-    "jest": "^29.0.0",
-    "jest-environment-jsdom": "^29.0.0"
-  },
-  "jest": {
-    "testEnvironment": "jsdom"
+    "jsdom": "^29.0.2",
+    "vitest": "^4.1.5"
   }
 }
