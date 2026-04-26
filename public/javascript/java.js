@@ -28,15 +28,6 @@ import {
 } from './stampManager.js';
 import { updatePage, createTimeEntry, createExistingTimeEntry, createExistingEntries } from './ui.js';
 
-const titleContainer = document.getElementById("title-container");
-const orContainer = document.getElementById("or-container");
-const selectContainer = document.getElementById("select-container");
-const titleButton = document.getElementById("title-submit");
-const selectButton = document.getElementById("btn-stamp-loader");
-const txtSelect = document.getElementById("txt-path");
-const innerContentContainer = document.getElementById("inner-content-container");
-const contentContainer = document.getElementById("content-container");
-
 var fileNameTitle = "timestamp";
 
 const timer = new Timer();
@@ -63,13 +54,20 @@ const uiHandlers = {
 
 reader.addEventListener("load", readTextFile);
 
-if(doesExist(titleButton)){
-    titleButton.addEventListener("click", addTitle);
+export function initApp() {
+    const titleButton = document.getElementById("title-submit");
+    const selectButton = document.getElementById("btn-stamp-loader");
+
+    if (doesExist(titleButton)) {
+        titleButton.addEventListener("click", addTitle);
+    }
+
+    if (doesExist(selectButton)) {
+        selectButton.addEventListener("click", loadFile);
+    }
 }
 
-if(doesExist(selectButton)){
-    selectButton.addEventListener("click", loadFile)
-}
+initApp();
 
 function addTitle(){
     let titleInput = document.getElementById("title");
