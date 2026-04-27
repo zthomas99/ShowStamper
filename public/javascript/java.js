@@ -33,6 +33,7 @@ var fileNameTitle = "timestamp";
 const timer = new Timer();
 const reader = new FileReader();
 var draggedEntry = null;
+let txtSelect;
 
 const uiHandlers = {
     onSetTime: setTime,
@@ -57,6 +58,7 @@ reader.addEventListener("load", readTextFile);
 export function initApp() {
     const titleButton = document.getElementById("title-submit");
     const selectButton = document.getElementById("btn-stamp-loader");
+    txtSelect = document.getElementById('txt-path');
 
     if (doesExist(titleButton)) {
         titleButton.addEventListener("click", addTitle);
@@ -211,24 +213,6 @@ function enableExtractionButton(sourceEntry)
         }
     }
 }
-
-/**
- * Writes timesamp to flat file
- * @param {*} timeStamp that should be written
- * @param {*} entry that contains the timestamps
- * @param {*} position number of indentations that should be used when writing the timestamp.
- * @returns text of the written version of the timestamp.
- */
-
-/**
- * Returns the path to the entry div.
- * @param {*} entryDiv whos path is returned
- * @returns An array of div ids that goes to the specified div.
- */
-
-/**
- * Updates the local file with the new entries found in the map.
- */
 
 function retrieveTimeStamps(timeDiv)
 {

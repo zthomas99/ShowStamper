@@ -57,6 +57,11 @@ export function getParentEntry(entry) {
     return currentElement;
 }
 
+/**
+ * Returns the path to the entry div.
+ * @param {*} entryDiv whos path is returned
+ * @returns An array of div ids that goes to the specified div.
+ */
 export function getEntryPath(entryDiv) {
     let path = [];
     let currentNode = entryDiv;

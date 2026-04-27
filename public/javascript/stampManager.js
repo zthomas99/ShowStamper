@@ -3,6 +3,13 @@ import { Timestamp } from './TimeStamp.js';
 
 export const stampMap = new Map();
 
+/**
+ * Writes timesamp to flat file
+ * @param {*} timeStamp that should be written
+ * @param {*} entry that contains the timestamps
+ * @param {*} position number of indentations that should be used when writing the timestamp.
+ * @returns text of the written version of the timestamp.
+ */
 export function createWrittenEntryFromTimeStamp(timeStamp, entry, position) {
     if (timeStamp instanceof Timestamp) {
         let timeList = timeStamp.timeList;
@@ -23,6 +30,9 @@ export function createWrittenEntryFromTimeStamp(timeStamp, entry, position) {
     return entry;
 }
 
+/**
+ * Updates the local file with the new entries found in the map.
+ */
 export function updateStampFile(fileNameTitle) {
     let fileName = fileNameTitle.replaceAll(' ', '_') + ".txt";
     let content = fileNameTitle + "\n\n" + "!!!! HIT THAT LIKE BUTTON !!!!" + "\n\n";
