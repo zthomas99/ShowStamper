@@ -29,7 +29,7 @@ A web application for creating detailed timestamped video logs with hierarchical
 ### Overview
 ![TimeStamp Overview](public/images/steps/step3.png)
 
-### Adding Time
+### Double Click to Add Time
 ![Adding Time](public/images/steps/step7.gif)
 
 ## Testing
