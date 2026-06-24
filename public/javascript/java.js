@@ -26,7 +26,7 @@ import {
     removeTimeStampTime,
     updateStampFile
 } from './stampManager.js';
-import { updatePage, createTimeEntry, createExistingTimeEntry, createExistingEntries } from './ui.js';
+import { updatePage, createTimeEntry, createExistingTimeEntry, createExistingEntries, createTimeSpan } from './ui.js';
 import { YouTubeTimeSource, WallClockTimer, extractVideoId } from './timeSource.js';
 
 var fileNameTitle = "timestamp";
@@ -414,7 +414,28 @@ function onEntryDropped(event)
         return;
     }
 
-    if(isValidDestinationTarget(event.target.parentNode) === false)
+    // Resolve the destination: the drop can land on the sub-stamp-entry-div,
+    // directly on a time-entry-div, or anywhere inside one. Walk up to find
+    // the nearest time-entry-div or sub-stamp-entry-div.
+    let dropTarget = event.target;
+    while (doesExist(dropTarget) &&
+           !dropTarget.classList.contains('sub-stamp-entry-div') &&
+           !dropTarget.classList.contains('timestamp-holder')) {
+        if (dropTarget.classList.contains('time-entry-div')) {
+            // Dropped onto the card itself — use its sub-entry div as target
+            const sub = getSelfSubEntryDiv(dropTarget);
+            if (doesExist(sub)) { dropTarget = sub; }
+            break;
+        }
+        dropTarget = dropTarget.parentNode;
+    }
+
+    if (!doesExist(dropTarget) || dropTarget.classList.contains('timestamp-holder')) {
+        draggedEntry = null;
+        return;
+    }
+
+    if(isValidDestinationTarget(dropTarget.parentNode) === false)
     {
         alert("Please enter a topic into the timestamp you wish to drag to.");
         draggedEntry = null;
@@ -427,17 +448,17 @@ function onEntryDropped(event)
     // Enable the extraction button.
     enableExtractionButton(draggedEntry);
 
-    if(doesExist(selfSubDivHolder) && event.target == selfSubDivHolder)
+    if(doesExist(selfSubDivHolder) && dropTarget == selfSubDivHolder)
     {
         return;
     }
 
-    if (event.target.classList.contains("sub-stamp-entry-div"))
+    if (dropTarget.classList.contains("sub-stamp-entry-div"))
     {
         let sourceParent = getTopParentEntry(draggedEntry);
-        let destinationParent = getTopParentEntry(event.target);
+        let destinationParent = getTopParentEntry(dropTarget);
         let sourcePath = getEntryPath(draggedEntry);
-        let destinationPath = getEntryPath(event.target);
+        let destinationPath = getEntryPath(dropTarget);
         if (doesExist(sourceParent) && doesExist(destinationParent) && doesExist(sourcePath) && doesExist(destinationPath))
         {
             if (stampMap.has(sourceParent) && stampMap.has(destinationParent))
@@ -458,7 +479,7 @@ function onEntryDropped(event)
                 }
             }
             draggedEntry.parentNode.removeChild(draggedEntry);
-            event.target.appendChild(draggedEntry);
+            dropTarget.appendChild(draggedEntry);
         }
 
         if (doesExist(sourceParent) == false || doesExist(destinationParent) == false)
@@ -468,7 +489,7 @@ function onEntryDropped(event)
     
     }
     draggedEntry = null;
-    event.target.classList.remove('dragover');
+    dropTarget.classList.remove('dragover');
 }
 
 function onSubEntryDragOver(event)
@@ -478,12 +499,15 @@ function onSubEntryDragOver(event)
 
 function onEntryDragStart(event)
 {
-    if (isValidSourceTargetToDrag(event.target) == false)
+    // Use currentTarget (the time-entry-div with the listener) rather than
+    // target (whichever child element the cursor happened to grab), so the
+    // id check and draggedEntry assignment always reference the card element.
+    if (isValidSourceTargetToDrag(event.currentTarget) == false)
     {
         alert("Please enter a topic for the timestamp that you wish move.");
         return;
     }
-    draggedEntry = event.target;
+    draggedEntry = event.currentTarget;
 }
 
 function onSubEntryDragEnter(event)
@@ -511,23 +535,26 @@ function onSubEntryDragLeave(event)
 
 function appendTime(event)
 {
-    let timeDiv = event.target;
-    if(doesExist(timeDiv))
+    // Walk up to .time-list-div so this works whether the dblclick landed on
+    // the container background or on one of the inner badge spans.
+    let timeListDiv = querySelectParents("time-list-div", event.target);
+    if(doesExist(timeListDiv))
     {   
         let currentTime = getCurrentTime();
-        let timeSpan = document.createElement('span');
-        timeSpan.className = "entry-time-span";
-        timeSpan.innerText = currentTime;
-        timeDiv.parentNode.append(timeSpan);
-        let parentEntry = getTopParentEntry(timeDiv);
-        let path = getEntryPath(timeDiv.parentNode.parentNode);
+        timeListDiv.append(createTimeSpan(currentTime));
+        let timeEntryDiv = querySelectParents("time-entry-div", timeListDiv);
+        let parentEntry = getTopParentEntry(timeEntryDiv);
+        let path = getEntryPath(timeEntryDiv);
         addTimeStampTime(parentEntry, path, currentTime);
     }
 }
 
 function onExtractClick(event)
 {
-    let extractBtn = event.target;
+    // Use currentTarget (the button element the listener is on) rather than
+    // target (which may be the <img> child). Setting display:none on the img
+    // would leave the transparent 25×25 button shell still visible.
+    let extractBtn = event.currentTarget;
     if (doesExist(extractBtn))
     {
         let sourceEntry = querySelectParents("time-entry-div", event.target);

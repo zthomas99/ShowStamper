@@ -489,6 +489,13 @@ span
     padding: 10px;
 }
 
+/* Hide the drop-zone gutter when empty and not being dragged over */
+.sub-stamp-entry-div:empty:not(.dragover)
+{
+    padding: 0;
+    margin: 0;
+}
+
 footer {
     position:fixed;
     width:98%;

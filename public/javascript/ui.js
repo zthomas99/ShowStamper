@@ -386,6 +386,33 @@ function _insertSorted(container, newCard, newTimeStr) {
     container.appendChild(newCard);
 }
 
+/**
+ * Creates a styled time-badge span for use inside the time-list-div grid.
+ * Exported so java.js can create matching badges when appending extra times.
+ */
+export function createTimeSpan(timeText) {
+    const span = document.createElement('span');
+    span.className = 'entry-time-span';
+    span.innerText = timeText;
+    span.style.cssText = [
+        'display:inline-flex',
+        'align-items:center',
+        'justify-content:center',
+        'background:rgba(11,95,255,0.25)',
+        'color:#7eb3ff',
+        'font-family:monospace',
+        'font-size:0.82rem',
+        'font-weight:700',
+        'letter-spacing:0.05em',
+        'padding:4px 12px',
+        'border-radius:20px',
+        'white-space:nowrap',
+        'cursor:default',
+        'user-select:none'
+    ].join(';');
+    return span;
+}
+
 function createEntryBase(topic, timeList, timestamp, handlers) {
     const entryContainer = document.getElementById('timestamp-holder');
     if (!doesExist(entryContainer)) {
@@ -405,7 +432,6 @@ function createEntryBase(topic, timeList, timestamp, handlers) {
         'background:rgba(255,255,255,0.06)',
         'border:2px solid #3b82f6',
         'margin-bottom:10px',
-        'overflow:hidden',
         'transition:box-shadow .15s, background .15s'
     ].join(';');
     if (timestamp && timestamp.id) {
@@ -425,30 +451,17 @@ function createEntryBase(topic, timeList, timestamp, handlers) {
     const timeDiv = document.createElement('div');
     timeDiv.className = 'time-list-div';
     timeDiv.addEventListener('dblclick', handlers.onAppendTime);
+    // Grid container: max 2 badge columns per row, expands vertically for more
     timeDiv.style.cssText = [
-        'display:inline-flex',
-        'align-items:center',
-        'justify-content:center',
+        'display:grid',
+        'grid-template-columns:repeat(2,max-content)',
+        'gap:6px 10px',
         'width:fit-content',
-        'background:rgba(11,95,255,0.25)',
-        'color:#7eb3ff',
-        'font-family:monospace',
-        'font-size:0.82rem',
-        'font-weight:700',
-        'letter-spacing:0.05em',
-        'padding:4px 12px',
-        'border-radius:20px',
-        'white-space:nowrap',
         'flex-shrink:0',
-        'cursor:default',
-        'user-select:none'
+        'cursor:default'
     ].join(';');
     timeList.forEach((time) => {
-        const entrySpan = document.createElement('span');
-        entrySpan.className = 'entry-time-span';
-        entrySpan.innerText = time;
-        entrySpan.style.cssText = 'font-size:inherit;font-weight:inherit;margin:0;';
-        timeDiv.append(entrySpan);
+        timeDiv.append(createTimeSpan(time));
     });
 
     // Topic input
