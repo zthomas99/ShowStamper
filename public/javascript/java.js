@@ -27,16 +27,19 @@ import {
     updateStampFile
 } from './stampManager.js';
 import { updatePage, createTimeEntry, createExistingTimeEntry, createExistingEntries } from './ui.js';
+import { YouTubeTimeSource, WallClockTimer, extractVideoId } from './timeSource.js';
 
 var fileNameTitle = "timestamp";
 
-const timer = new Timer();
+let timer = new Timer();
 const reader = new FileReader();
 var draggedEntry = null;
 let txtSelect;
 
 const uiHandlers = {
     onSetTime: setTime,
+    onSetTimeValue: setTimeValue,
+    onGetCurrentTime: getCurrentTime,
     onStart: startTimer,
     onStop: stopTimer,
     onCreateTimestamp: createTimeStamp,
@@ -67,27 +70,112 @@ export function initApp() {
     if (doesExist(selectButton)) {
         selectButton.addEventListener("click", loadFile);
     }
+
+    // Show/hide YouTube URL input based on selected timing mode
+    document.querySelectorAll('input[name="timing-mode"]').forEach(radio => {
+        radio.addEventListener('change', () => {
+            const ytRow = document.getElementById('youtube-url-row');
+            if (ytRow) ytRow.style.display = radio.value === 'youtube' ? 'flex' : 'none';
+        });
+    });
 }
 
 initApp();
 
 function addTitle(){
     let titleInput = document.getElementById("title");
-    if(doesExist(titleInput)){
-        let title = titleInput.value;
+    if(!doesExist(titleInput)) return;
 
-        if(title === "")
-        {
-            alert("Title cannot be blank.");
+    const title = titleInput.value;
+    if (title === "") {
+        alert("Title cannot be blank.");
+        return;
+    }
+
+    const selectedMode = (document.querySelector('input[name="timing-mode"]:checked') || {}).value || 'manual';
+
+    if (selectedMode === 'youtube') {
+        const ytInput = document.getElementById('youtube-url');
+        const videoId = extractVideoId(ytInput ? ytInput.value : '');
+        if (!videoId) {
+            alert('Please enter a valid YouTube URL or video ID.');
             return;
         }
+        timer = new YouTubeTimeSource(videoId);
+        updatePage(title.toUpperCase(), uiHandlers);
+        fileNameTitle = title;
 
-        if(doesExist(title))
-        {
-            updatePage(title.toUpperCase(), uiHandlers);
-            fileNameTitle = title;
+        // Create a collapsible player section below the banner
+        const playerSection = _createYouTubePlayerSection();
+        const banner = document.getElementById('top-banner');
+        if (banner && banner.nextSibling) {
+            document.body.insertBefore(playerSection, banner.nextSibling);
+        } else {
+            document.body.appendChild(playerSection);
         }
+        timer.init('yt-player-frame').then(() => {
+            console.log('YouTube player ready');
+        });
+    } else if (selectedMode === 'wallclock') {
+        timer = new WallClockTimer();
+        updatePage(title.toUpperCase(), uiHandlers);
+        fileNameTitle = title;
+    } else {
+        timer = new Timer();
+        updatePage(title.toUpperCase(), uiHandlers);
+        fileNameTitle = title;
     }
+}
+
+/** Build the collapsible YouTube player section injected below the banner */
+function _createYouTubePlayerSection() {
+    const section = document.createElement('div');
+    section.id = 'yt-player-section';
+    section.style.cssText = [
+        'width:100%',
+        'display:flex',
+        'flex-direction:column',
+        'align-items:center',
+        'background:#111',
+        'border-bottom:2px solid #3b82f6'
+    ].join(';');
+
+    const toggleBar = document.createElement('button');
+    toggleBar.style.cssText = [
+        'width:100%',
+        'background:rgba(255,255,255,0.05)',
+        'border:none',
+        'color:rgba(255,255,255,0.6)',
+        'font-size:0.8rem',
+        'padding:4px',
+        'cursor:pointer',
+        'text-align:center'
+    ].join(';');
+    toggleBar.textContent = '▲ Hide stream';
+
+    const playerWrapper = document.createElement('div');
+    playerWrapper.style.cssText = [
+        'width:100%',
+        'max-width:640px',
+        'aspect-ratio:16/9',
+        'margin:0 auto'
+    ].join(';');
+
+    // The IFrame API replaces this div with the player iframe
+    const playerFrame = document.createElement('div');
+    playerFrame.id = 'yt-player-frame';
+    playerFrame.style.cssText = 'width:100%;height:100%;';
+    playerWrapper.appendChild(playerFrame);
+
+    let visible = true;
+    toggleBar.addEventListener('click', () => {
+        visible = !visible;
+        playerWrapper.style.display = visible ? 'block' : 'none';
+        toggleBar.textContent = visible ? '▲ Hide stream' : '▼ Show stream';
+    });
+
+    section.append(playerWrapper, toggleBar);
+    return section;
 }
 
 /**
@@ -141,6 +229,13 @@ function setTime(){
         }
         alert("This is an incorrect time format to set.\n Please use the hour:minute:second (00:00:00) format.");
     }
+}
+
+function setTimeValue(time) {
+    if (time && timer.setTime(time)) {
+        return true;
+    }
+    return false;
 }
 
 function getCurrentTime()
@@ -279,7 +374,7 @@ function addToMap(event, time)
 function handleKeyPress(event){
     if(doesExist(event)){
         if(event.key === '*'){
-            createTimeEntry(getCurrentTime());
+            createTimeEntry(getCurrentTime(), uiHandlers);
         }
         else if(event.ctrlKey && event.key === 's')
         {
@@ -290,7 +385,7 @@ function handleKeyPress(event){
 }
 
 function createTimeStamp(event){
-    createTimeEntry(getCurrentTime());
+    createTimeEntry(getCurrentTime(), uiHandlers);
 }
 
 function saveTimeStamps(event){

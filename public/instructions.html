@@ -2,45 +2,310 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style/instructions-style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instructions</title>
+    <title>ShowStamper — Instructions</title>
+    <link rel="icon" href="./images/icononly_transparent.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style/instructions-style.css">
 </head>
 <body>
-    <div class="step">
-        <h3>Starting The Timer</h3>
-        <img class="step-image1" src="images/steps/step1.png" alt="Starting the timer">
-        <p> As soon as the video starts, click the start timer button to keep in sync with the show's time. You can always adjust the timer by following the instructions found below in "Changing The Time".</p>
-    </div>
-    <div class="step">
-        <h3>Creating A Time Stamp</h3>
-        <img class="step-image" src="images/steps/step2.png" alt="Creating a time stamp">
-        <p>While the timer is running, click the "Create Timestamp" button to generate a time stamp for a video topic.</p>
-    </div>
-    <div class="step">
-        <h3>Entering and Saving Topics</h3>
-        <img class="step-image" src="images/steps/step3.png" alt="Entering and saving topics">
-        <p>The timestamp created will include the current time and a text box entry for your to label the timestamp with a topic name.</p>
-    </div>
-    <div class="step">
-        <h3>Stopping The Timer</h3>
-        <img class="step-image" src="images/steps/step4.png" alt="Stopping the timer">
-        <p>You can pause the timer at any time by clicking the stop timer button. Simply click start timer to resume the timer.</p>
-    </div>
-    <div class="step">
-        <h3>Changing The Time</h3>
-        <img class="step-image-close" src="images/steps/step5.png" alt="Changing the time">
-        <p>Sometimes the timer may come out of sync of the show/episode that you are creating a video log for. If this happens, simply stop the timer and enter the correct time in the time editor text field. Make sure the time entered follows the format HH:MM:SS (HH = hour) (MM = minutes) (SS = seconds)</p>
-    </div>
-    <div class="step">
-        <h3>Creating Subtopics</h3>
-        <img class="step-image-close" src="images/steps/step6.gif" alt="Changing the time">
-        <p>You can reorganize the timestamp's into one another. The topic that is dragged will automatically become a subtopic to the destination timestamp</p>
-    </div>
-    <div class="step">
-        <h3>Adding Multiple Times To A Particular TimeStamp</h3>
-        <img class="step-image-close" src="images/steps/step7.gif" alt="Changing the time">
-        <p>You can also add multiple time markings to one timestamp, by double clicking one of the previous time markings. This is helpful in situations when an episode topic is reintroduced at various moments of the show. </p>
-    </div>
+
+    <header class="page-header">
+        <img src="images/FullLogo_Caption_Transparent.png" alt="ShowStamper" class="header-logo">
+        <p class="header-subtitle">Everything you need to know to timestamp your shows.</p>
+        <a href="index.html" class="back-link">&#8592; Back to App</a>
+    </header>
+
+    <main class="accordion-root">
+
+        <!-- ── 1. Getting Started ──────────────────────────────── -->
+        <details class="group" open>
+            <summary class="group-summary">
+                <span class="group-number">1</span>
+                <span class="group-title">Getting Started</span>
+                <span class="chevron">&#9660;</span>
+            </summary>
+            <div class="group-body">
+
+                <details class="section">
+                    <summary class="section-summary">1.1 &nbsp; Setting Up Your Log</summary>
+                    <div class="section-body">
+                        <p>When you open ShowStamper you'll see the landing page. Enter a title for your session — this becomes the heading at the top of your stamp list.</p>
+                        <div class="mock-screen">
+                            <div class="mock-label-row"><span class="mock-label">Create a new video log:</span></div>
+                            <div class="mock-input-row">
+                                <div class="mock-input">What is the title of the video log?</div>
+                                <div class="mock-btn-primary">Submit</div>
+                            </div>
+                            <div class="mock-label-row" style="margin-top:14px"><span class="mock-label">Timing source:</span></div>
+                            <div class="mock-radio-row">
+                                <span class="mock-radio selected">&#9679; Manual Timer</span>
+                                <span class="mock-radio">&#9675; YouTube Stream</span>
+                                <span class="mock-radio">&#9675; Wall Clock</span>
+                            </div>
+                        </div>
+                        <p>Select a <strong>Timing source</strong> before submitting (see <em>Section 5</em> for details on each mode). Then click <strong>Submit</strong> to open your stamping session.</p>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">1.2 &nbsp; Loading an Existing Log</summary>
+                    <div class="section-body">
+                        <p>To continue working on a previously saved log, use the <strong>Upload an existing video log</strong> section on the landing page.</p>
+                        <div class="mock-screen">
+                            <div class="mock-label-row"><span class="mock-label">Upload an existing video log:</span></div>
+                            <div class="mock-input-row">
+                                <div class="mock-input">c:\</div>
+                                <div class="mock-btn-secondary">Select</div>
+                            </div>
+                        </div>
+                        <p>Click <strong>Select</strong>, choose your saved <code>.txt</code> file, and all your previous timestamps will be restored in the correct order.</p>
+                    </div>
+                </details>
+
+            </div>
+        </details>
+
+        <!-- ── 2. The Timer Banner ─────────────────────────────── -->
+        <details class="group">
+            <summary class="group-summary">
+                <span class="group-number">2</span>
+                <span class="group-title">The Timer Banner</span>
+                <span class="chevron">&#9660;</span>
+            </summary>
+            <div class="group-body">
+
+                <details class="section">
+                    <summary class="section-summary">2.1 &nbsp; Starting and Stopping the Timer</summary>
+                    <div class="section-body">
+                        <p>Once your session loads, the dark banner at the top contains all timer controls. The circular button in the centre toggles between <strong>Start</strong> and <strong>Stop</strong>.</p>
+                        <div class="mock-banner">
+                            <div class="mock-btn-blue">+ Stamp</div>
+                            <div class="mock-banner-center">
+                                <div class="mock-timer-display">00:00:00</div>
+                                <div class="mock-toggle-btn">Start</div>
+                            </div>
+                            <div class="mock-btn-outline">Save</div>
+                        </div>
+                        <ul>
+                            <li>Click <strong>Start</strong> to begin counting. The button label changes to <strong>Stop</strong>.</li>
+                            <li>Click <strong>Stop</strong> to pause. The timer display becomes editable (see 2.2).</li>
+                            <li>Click <strong>Start</strong> again to resume from exactly where it paused.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">2.2 &nbsp; Editing the Time</summary>
+                    <div class="section-body">
+                        <p>If the timer drifts out of sync with your show, you can correct it without losing any stamps.</p>
+                        <div class="mock-banner">
+                            <div class="mock-btn-blue">+ Stamp</div>
+                            <div class="mock-banner-center">
+                                <div class="mock-edit-input">01:23:45</div>
+                                <div class="mock-toggle-btn">Start</div>
+                            </div>
+                            <div class="mock-btn-outline">Save</div>
+                        </div>
+                        <ol>
+                            <li>Click <strong>Stop</strong> — the timer becomes an editable text field pre-filled with the current time.</li>
+                            <li>Type the correct time in <code>HH:MM:SS</code> format.</li>
+                            <li>Press <strong>Enter</strong> to confirm, or <strong>Escape</strong> to cancel without changing anything.</li>
+                            <li>Click <strong>Start</strong> to resume from your corrected time.</li>
+                        </ol>
+                    </div>
+                </details>
+
+            </div>
+        </details>
+
+        <!-- ── 3. Creating Timestamps ──────────────────────────── -->
+        <details class="group">
+            <summary class="group-summary">
+                <span class="group-number">3</span>
+                <span class="group-title">Creating Timestamps</span>
+                <span class="chevron">&#9660;</span>
+            </summary>
+            <div class="group-body">
+
+                <details class="section">
+                    <summary class="section-summary">3.1 &nbsp; Creating a Stamp</summary>
+                    <div class="section-body">
+                        <p>When something worth noting happens in the show, capture it instantly using either method:</p>
+                        <ul>
+                            <li>Click the <strong>+ Stamp</strong> button on the left side of the banner.</li>
+                            <li>Press the <strong>*</strong> (asterisk) key on your keyboard as a quick shortcut.</li>
+                        </ul>
+                        <p>A new card appears at the correct position in the list, sorted by its captured time.</p>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">3.2 &nbsp; Entering a Topic</summary>
+                    <div class="section-body">
+                        <p>Each stamp card shows a time badge and a topic input. The input is automatically focused after stamping so you can type right away.</p>
+                        <div class="mock-card">
+                            <div class="mock-time-badge">00:14:32</div>
+                            <div class="mock-topic-input">Add a topic…</div>
+                            <div class="mock-delete-btn">&#215;</div>
+                        </div>
+                        <ul>
+                            <li>The <strong>blue pill</strong> on the left shows the captured time.</li>
+                            <li>Type your topic description in the text field.</li>
+                            <li>The <strong>&#215;</strong> button on the right removes the stamp.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">3.3 &nbsp; Rewinding and Sorted Insertion</summary>
+                    <div class="section-body">
+                        <p>If you rewind the video or manually set the timer to an earlier time and create a stamp, it is automatically inserted at the correct position in the list — not just added to the top.</p>
+                        <div class="mock-card-list">
+                            <div class="mock-card">
+                                <div class="mock-time-badge">00:45:10</div>
+                                <div class="mock-topic-input">Latest topic</div>
+                                <div class="mock-delete-btn">&#215;</div>
+                            </div>
+                            <div class="mock-card accent">
+                                <div class="mock-time-badge">00:22:05</div>
+                                <div class="mock-topic-input">&#8592; Inserted here after rewind</div>
+                                <div class="mock-delete-btn">&#215;</div>
+                            </div>
+                            <div class="mock-card">
+                                <div class="mock-time-badge">00:10:00</div>
+                                <div class="mock-topic-input">Earlier topic</div>
+                                <div class="mock-delete-btn">&#215;</div>
+                            </div>
+                        </div>
+                        <p>The list is always kept in <strong>newest-at-top</strong> order by actual timestamp value.</p>
+                    </div>
+                </details>
+
+            </div>
+        </details>
+
+        <!-- ── 4. Managing Your Log ────────────────────────────── -->
+        <details class="group">
+            <summary class="group-summary">
+                <span class="group-number">4</span>
+                <span class="group-title">Managing Your Log</span>
+                <span class="chevron">&#9660;</span>
+            </summary>
+            <div class="group-body">
+
+                <details class="section">
+                    <summary class="section-summary">4.1 &nbsp; Creating Subtopics</summary>
+                    <div class="section-body">
+                        <p>Timestamps can be nested under one another to represent topics and their sub-discussions.</p>
+                        <ol>
+                            <li>Click and hold a stamp card to begin dragging it.</li>
+                            <li>Drag it on top of the card you want as its parent.</li>
+                            <li>Release — the dragged card becomes a subtopic indented beneath the parent.</li>
+                        </ol>
+                        <p>This is useful when an episode has a main topic with sub-points discussed at different times.</p>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">4.2 &nbsp; Adding Multiple Times to One Stamp</summary>
+                    <div class="section-body">
+                        <p>If a topic is revisited later in the show, attach the new time to the existing stamp rather than creating a duplicate.</p>
+                        <ol>
+                            <li>While the timer is running, <strong>double-click the time badge</strong> on an existing stamp card.</li>
+                            <li>The current time is appended to that card's time badge.</li>
+                        </ol>
+                        <div class="mock-card">
+                            <div class="mock-time-badge multi">00:14:32 &nbsp;&#183;&nbsp; 01:02:18</div>
+                            <div class="mock-topic-input">Topic revisited later</div>
+                            <div class="mock-delete-btn">&#215;</div>
+                        </div>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">4.3 &nbsp; Saving Your Log</summary>
+                    <div class="section-body">
+                        <p>Click the <strong>Save</strong> button on the right side of the banner at any time to download your log as a <code>.txt</code> file.</p>
+                        <div class="mock-banner compact">
+                            <div class="mock-btn-blue">+ Stamp</div>
+                            <div class="mock-banner-center">
+                                <div class="mock-timer-display">00:45:12</div>
+                                <div class="mock-toggle-btn">Stop</div>
+                            </div>
+                            <div class="mock-btn-outline highlight">Save</div>
+                        </div>
+                        <p>The file is named after your log title and can be reloaded later using <strong>Upload an existing video log</strong> on the landing page.</p>
+                    </div>
+                </details>
+
+            </div>
+        </details>
+
+        <!-- ── 5. Timing Modes ─────────────────────────────────── -->
+        <details class="group">
+            <summary class="group-summary">
+                <span class="group-number">5</span>
+                <span class="group-title">Timing Modes</span>
+                <span class="chevron">&#9660;</span>
+            </summary>
+            <div class="group-body">
+
+                <details class="section">
+                    <summary class="section-summary">5.1 &nbsp; Manual Timer</summary>
+                    <div class="section-body">
+                        <p>The default mode. A classic start/stop timer driven by the browser's interval.</p>
+                        <ul>
+                            <li>Best when you have no external video reference.</li>
+                            <li>Click <strong>Start</strong> when your show begins and <strong>Stop</strong> to pause.</li>
+                            <li><strong>Note:</strong> Browsers throttle background tabs, which may cause slight drift over long sessions if you switch away from this tab.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">5.2 &nbsp; Wall Clock</summary>
+                    <div class="section-body">
+                        <p>An improved timer that reads the system clock (<code>Date.now()</code>) instead of counting intervals — so it never drifts.</p>
+                        <ul>
+                            <li>Stays accurate even when the tab is in the background or the window is minimised.</li>
+                            <li>Behaves identically to Manual Timer from the user's perspective.</li>
+                            <li><strong>Recommended</strong> for long sessions or when you frequently switch tabs.</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="section">
+                    <summary class="section-summary">5.3 &nbsp; YouTube Stream</summary>
+                    <div class="section-body">
+                        <p>Embeds a YouTube video or live stream and drives the timer directly from the player's playback position.</p>
+                        <ol>
+                            <li>Select <strong>YouTube Stream</strong> on the landing page.</li>
+                            <li>Paste the YouTube URL or video ID into the field that appears.</li>
+                            <li>Submit — the player loads below the banner. Use <strong>Start</strong> to play and <strong>Stop</strong> to pause.</li>
+                        </ol>
+                        <div class="callout">
+                            <strong>Live streams &amp; offset:</strong> For live streams the timer may start at an unexpected value. Use the <strong>time editor</strong> (Stop &#8594; edit &#8594; Enter) to set the correct broadcast start time. The app handles any negative player values automatically.
+                        </div>
+                        <ul>
+                            <li>Scrubbing the video moves the timer — stamps are still sorted correctly.</li>
+                            <li>Resuming after a pause recalculates the offset so time continues smoothly from where it stopped.</li>
+                            <li>Use the <strong>&#9650; Hide stream</strong> toggle to collapse the player without stopping playback.</li>
+                        </ul>
+                    </div>
+                </details>
+
+            </div>
+        </details>
+
+    </main>
+
+    <footer class="page-footer">
+        <a href="index.html">&#8592; Back to App</a>
+        <a href="donate.html" target="_blank">Donate</a>
+    </footer>
+
 </body>
 </html>
