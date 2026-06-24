@@ -202,7 +202,7 @@ export class WallClockTimer {
         this.offsetSeconds = h * 3600 + m * 60 + s;
         // If running, reset the wall-clock start so elapsed is counted from now
         if (this.running) this.startWallMs = Date.now();
-        this._updateDisplay();
+        _writeDomTime(this._totalSeconds());
         return true;
     }
 
