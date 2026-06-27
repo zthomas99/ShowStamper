@@ -92,6 +92,15 @@ function addTitle(){
         return;
     }
 
+    _initTimerAndPage(title);
+}
+
+/**
+ * Reads the selected timing mode, initialises the correct timer, transitions
+ * the page, and (for YouTube) builds the embedded player section.
+ * Called by both addTitle() and createPageWithStamps().
+ */
+function _initTimerAndPage(title) {
     const selectedMode = (document.querySelector('input[name="timing-mode"]:checked') || {}).value || 'manual';
 
     if (selectedMode === 'youtube') {
@@ -196,8 +205,7 @@ function loadFile(){
 
 function createPageWithStamps(stampsArry){
     let title = stampsArry[0];
-    fileNameTitle = title;
-    updatePage(title, uiHandlers);
+    _initTimerAndPage(title);
     let entries = stampsArry.slice(1);
     createExistingEntries(entries, uiHandlers);
 }
