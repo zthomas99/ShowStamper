@@ -16,8 +16,10 @@ export class YouTubeTimeSource {
         this.pollInterval = null;
         this.ready = false;
         this.wakeLock = null;
-        this.frozenSeconds = null;  // display position saved on Stop
-        this.pendingResync = false; // recalculate offset on next poll tick
+        this.frozenSeconds = null;   // display position saved on user Stop
+        this.pendingResync = false;   // recalculate offset on next poll tick
+        this.reloadFrozenSeconds = null; // display position saved during a player reload
+        this.playerState = -1;           // tracks last known YT player state
     }
 
     /**
@@ -36,6 +38,27 @@ export class YouTubeTimeSource {
                         onReady: () => {
                             this.ready = true;
                             resolve();
+                        },
+                        onStateChange: (e) => {
+                            const prevState = this.playerState;
+                            this.playerState = e.data;
+
+                            // Only treat -1 (unstarted) as a mid-session reload when
+                            // the player was actively PLAYING (state 1) immediately
+                            // before. This avoids false triggers during initial startup
+                            // where the player normally transitions -1 → 3 → 1.
+                            if (e.data === -1 && prevState === 1 && this.pollInterval) {
+                                this.reloadFrozenSeconds = this._totalSeconds();
+                            }
+
+                            // Player resumed after a reload — recalibrate offset so
+                            // the display continues from the frozen position.
+                            if (e.data === 1 && this.reloadFrozenSeconds !== null) {
+                                this.frozenSeconds = this.reloadFrozenSeconds;
+                                this.reloadFrozenSeconds = null;
+                                this.pendingResync = true;
+                                _writeDomTime(this.frozenSeconds);
+                            }
                         }
                     }
                 });
@@ -131,6 +154,12 @@ export class YouTubeTimeSource {
     }
 
     _updateDisplay() {
+        // Player is mid-reload — hold the display at the last known good time
+        // rather than showing the wrong value from a reset getCurrentTime().
+        if (this.reloadFrozenSeconds !== null) {
+            _writeDomTime(this.reloadFrozenSeconds);
+            return;
+        }
         if (this.pendingResync) {
             // Recalculate offset so display continues from frozenSeconds.
             // This runs on the first tick after Start, by which point the
